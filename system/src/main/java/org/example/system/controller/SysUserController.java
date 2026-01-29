@@ -1,12 +1,11 @@
 package org.example.system.controller;
 
+import org.example.system.common.Result;
 import org.example.system.domain.SysUser;
+import org.example.system.domain.dto.LoginDTO;
 import org.example.system.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,8 +21,10 @@ public class SysUserController {
      * 地址：GET http://localhost:9501/user/list
      */
     @GetMapping("/list")
-    public List<SysUser> list() {
-        return userService.list(); // MP 提供的查询所有
+    public Result<List<SysUser>> list() {
+        List<SysUser> list = userService.list();
+        // 用 Result.success() 包裹一下数据
+        return Result.success(list);
     }
 
     /**
@@ -31,7 +32,15 @@ public class SysUserController {
      * 地址：GET http://localhost:9501/user/{id}
      */
     @GetMapping("/{id}")
-    public SysUser getInfo(@PathVariable Long id) {
-        return userService.getById(id); // MP 提供的根据ID查询
+    public Result<SysUser> getInfo(@PathVariable Long id) {
+        return Result.success(userService.getById(id));
+    }
+
+    @PostMapping("/login")
+    public Result<String> login(@RequestBody LoginDTO loginDTO) {
+        // 调用 Service 的登录方法
+        String token = userService.login(loginDTO);
+        // 返回结果
+        return Result.success(token);
     }
 }
