@@ -1,0 +1,29 @@
+server:
+  port: 9501
+
+spring:
+  application:
+    name: system-service
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # ⚠️ 再次确认：你的本地数据库名叫 spring_ai_cloud 吗？如果不是请修改这里
+      # 强制使用 IP 地址，并确保没有空格
+    url: jdbc:mysql://127.0.0.1:3306/spring_ai_cloud?characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+
+    username: root     # 你的数据库账号
+    password: Yxm24823@     # 你的数据库密码
+  # 解决 LocalDateTime 序列化问题 (可选，但建议加上)
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+mybatis-plus:
+  configuration:
+    # 开启日志：方便看 SQL
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    # 开启驼峰命名 (user_name -> userName)
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      logic-delete-value: 1
+      logic-not-delete-value: 0
